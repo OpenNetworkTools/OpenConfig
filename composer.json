@@ -12,6 +12,7 @@
     "autoload": {
         "psr-4": {
             "OpenNetworkTools\\": "src/",
+            "OpenNetworkTools\\Interfaces\\": "interfaces/",
             "OpenNerworkTools\\Toolbox\\": "toolbox/"
         }
     },
