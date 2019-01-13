@@ -52,6 +52,8 @@
         }
 
         public function addVlans($label){
+            if(!@is_object($this->vlans[$label])) $this->vlans[$label] = new \OpenNetworkTools\OpenConfig\Vlans();
+            return $this->vlans[$label];
         }
 
         public function copyVlans($label_source, $label_dest){
@@ -61,6 +63,8 @@
         }
 
         public function getVlans($label = NULL){
+            if(!is_null($label)) return $this->vlans[$label];
+            else return $this->vlans;
         }
 
         public function replaceVlans($label_source, $label_dest){
