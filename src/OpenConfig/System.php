@@ -1,7 +1,7 @@
 <?php
     namespace OpenNetworkTools\OpenConfig;
         
-    class System implements \OpenNetworkTools\OpenConfig\SystemInterfaces {
+    class System implements \OpenNetworkTools\Interfaces\OpenConfig\SystemInterfaces {
     
         private $hostname;
         private $timezone;
