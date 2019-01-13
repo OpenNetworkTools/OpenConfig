@@ -12,7 +12,7 @@
         }
 
         public function addInterfaces($label){
-            if(!is_object($this->interfaces[$label])) $this->interfaces[$label] = new \OpenNetworkTools\OpenConfig\Interfaces();
+            if(!@is_object($this->interfaces[$label])) $this->interfaces[$label] = new \OpenNetworkTools\OpenConfig\Interfaces();
             return $this->interfaces[$label];
         }
 
