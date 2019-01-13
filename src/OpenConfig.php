@@ -8,6 +8,7 @@
         private $vlans;
 
         public function __construct(){
+            $this->system = new \OpenNetworkTools\OpenConfig\System();
         }
 
         public function addInterfaces($label){
