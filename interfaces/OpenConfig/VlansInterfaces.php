@@ -10,6 +10,6 @@ namespace OpenNetworkTools\Interfaces\OpenConfig;
         public function setRoutingInterfaces($unit, $interface = "irb");
         public function deleteRoutingInterfaces();
         public function getVlanId();
-        public function setVlanId();
+        public function setVlanId($id);
     
     }
