@@ -82,7 +82,7 @@
          * @return \OpenNetworkTools\OpenConfig\Vlans
          */
         public function addVlans($label){
-            if(!@is_object($this->vlans[$label])) $this->setVlans($label, new \OpenNetworkTools\OpenConfig\Vlans($this));
+            if(!@is_object($this->vlans[$label])) $this->setVlans($label);
             return $this->vlans[$label];
         }
 
@@ -92,6 +92,7 @@
          */
         public function copyVlans($inputLabel, $outputLabel){
             $this->setVlans($outputLabel, clone $this->getVlans($inputLabel));
+            $this->getVlans($outputLabel)->setLabel($outputLabel);
         }
 
         /**
@@ -124,8 +125,11 @@
          * @param string $vlan
          * @return \OpenNetworkTools\OpenConfig\Vlans
          */
-        public function setVlans($label, $vlan = \OpenNetworkTools\OpenConfig\Vlans::class){
-            $this->vlans[$label] = $vlan;
+        public function setVlans($label, $vlan = null){
+            if(is_object($vlan)) $this->vlans[$label] = $vlan;
+            else {
+                $this->vlans[$label] = new \OpenNetworkTools\OpenConfig\Vlans($this, $label);
+            }
             ksort($this->vlans);
             return $this->vlans[$label];
         }
