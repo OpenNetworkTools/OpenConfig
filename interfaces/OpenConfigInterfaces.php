@@ -26,9 +26,19 @@
         public function getSystem();
         public function setSystem($system);
         public function restoreSystem();
+
+        /**
+         * @param $label
+         * @return \OpenNetworkTools\OpenConfig\Vlans
+         */
         public function addVlans($label);
         public function copyVlans($label_source, $label_dest);
         public function deleteVlans($label = NULL);
+
+        /**
+         * @param null $label
+         * @return array|\OpenNetworkTools\OpenConfig\Vlans
+         */
         public function getVlans($label = NULL);
         public function replaceVlans($label_source, $label_dest);
         public function setVlans($vlan, $label = NULL);

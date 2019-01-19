@@ -1,77 +1,133 @@
 <?php
     namespace OpenNetworkTools;
         
-    class OpenConfig implements \OpenNetworkTools\Interfaces\OpenConfigInterfaces {
-    
+    class OpenConfig {
+
+        private $chassis;
         private $interfaces;
+        private $protocols;
+        private $routingInstances;
+        private $services;
         private $system;
         private $vlans;
 
         public function __construct(){
-            $this->system = new \OpenNetworkTools\OpenConfig\System();
         }
 
+        /**
+         * @param $label
+         * @return \OpenNetworkTools\OpenConfig\Interfaces
+         */
         public function addInterfaces($label){
-            if(!@is_object($this->interfaces[$label])) $this->interfaces[$label] = new \OpenNetworkTools\OpenConfig\Interfaces();
+            if(!is_object($this->interfaces[$label])) $this->setInterfaces($label, new \OpenNetworkTools\OpenConfig\Interfaces($this));
             return $this->interfaces[$label];
         }
 
-        public function copyInterfaces($label_source, $label_dest){
+        public function addIntercaesAE($unit){
+            return $this->addInterfaces("ae".$unit);
         }
 
-        public function deleteInterfaces($label = NULL){
+        /**
+         * @return OpenConfig\Interfaces
+         */
+        public function addInterfacesL3(){
+            return $this->addInterfaces('irb');
         }
 
-        public function getInterfaces($label = NULL){
+        /**
+         * @param $inputLabel
+         * @param $outputLabel
+         */
+        public function copyInterfaces($inputLabel, $outputLabel){
+            $this->setInterfaces($outputLabel, clone $this->getInterfaces($inputLabel));
+        }
+
+        /**
+         * @param $label
+         */
+        public function deleteInterfaces($label){
+            unset($this->interfaces[$label]);
+        }
+
+        /**
+         * @param null $label
+         * @return array | \OpenNetworkTools\OpenConfig\Interfaces
+         */
+        public function getInterfaces($label = null){
             if(!is_null($label)) return $this->interfaces[$label];
             else return $this->interfaces;
         }
 
-        public function replaceInterfaces($label_source, $label_dest){
+        /**
+         * @param $inputLabel
+         * @param $outputLabel
+         */
+        public function replaceInterfaces($inputLabel, $outputLabel){
+            $this->copyInterfaces($inputLabel, $outputLabel);
+            $this->deleteInterfaces($inputLabel);
         }
 
-        public function setInterfaces($interface, $label = NULL){
+        /**
+         * @param $label
+         * @param string $interface
+         */
+        public function setInterfaces($label, $interface = \OpenNetworkTools\OpenConfig\Interfaces::class){
+            $this->interfaces[$label] = $interface;
+            ksort($this->interfaces);
+            return $this->interfaces[$label];
         }
 
-        public function getProtocols(){
-        }
-
-        public function setProtocols($protocols){
-        }
-
-        public function restoreProtocols(){
-        }
-
-        public function getSystem(){
-        }
-
-        public function setSystem($system){
-        }
-
-        public function restoreSystem(){
-        }
-
+        /**
+         * @param $label
+         * @return \OpenNetworkTools\OpenConfig\Vlans
+         */
         public function addVlans($label){
-            if(!@is_object($this->vlans[$label])) $this->vlans[$label] = new \OpenNetworkTools\OpenConfig\Vlans();
+            if(!@is_object($this->vlans[$label])) $this->setVlans($label, new \OpenNetworkTools\OpenConfig\Vlans($this));
             return $this->vlans[$label];
         }
 
-        public function copyVlans($label_source, $label_dest){
+        /**
+         * @param $inputLabel
+         * @param $outputLabel
+         */
+        public function copyVlans($inputLabel, $outputLabel){
+            $this->setVlans($outputLabel, clone $this->getVlans($inputLabel));
         }
 
-        public function deleteVlans($label = NULL){
+        /**
+         * @param $label
+         */
+        public function deleteVlans($label){
+            unset($this->vlans[$label]);
         }
 
-        public function getVlans($label = NULL){
+        /**
+         * @param null $label
+         * @return array | \OpenNetworkTools\OpenConfig\Vlans
+         */
+        public function getVlans($label = null){
             if(!is_null($label)) return $this->vlans[$label];
             else return $this->vlans;
         }
 
-        public function replaceVlans($label_source, $label_dest){
+        /**
+         * @param $inputLabel
+         * @param $outputLabel
+         */
+        public function replaceVlans($inputLabel, $outputLabel){
+            $this->copyVlans($inputLabel, $outputLabel);
+            $this->deleteVlans($inputLabel);
         }
 
-        public function setVlans($vlan, $label = NULL){
+        /**
+         * @param $label
+         * @param string $vlan
+         * @return \OpenNetworkTools\OpenConfig\Vlans
+         */
+        public function setVlans($label, $vlan = \OpenNetworkTools\OpenConfig\Vlans::class){
+            $this->vlans[$label] = $vlan;
+            ksort($this->vlans);
+            return $this->vlans[$label];
         }
-
 
     }

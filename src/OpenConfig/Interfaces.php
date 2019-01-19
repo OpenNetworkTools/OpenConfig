@@ -1,46 +1,57 @@
 <?php
     namespace OpenNetworkTools\OpenConfig;
         
-    class Interfaces  implements \OpenNetworkTools\Interfaces\OpenConfig\InterfacesInterfaces {
-    
-        private $description;
-        private $disable;
+    class Interfaces {
 
-        public function __construct(){
+        /**
+         * @var \OpenNetworkTools\OpenConfig
+         */
+        private $openConfig;
+
+        private $description;
+        private $unit;
+
+        public function __construct($openConfig){
+            $this->openConfig = $openConfig;
         }
 
         public function getDescription(){
+            return $this->description;
         }
 
         public function setDescription($description){
+            $this->description = $description;
+            return $this;
         }
 
-        public function getDisable(){
+        public function addUnit($label){
+            if(!@is_object($this->unit[$label])) $this->setUnit($label, new \OpenNetworkTools\OpenConfig\Interfaces\Unit());
+            return $this->unit[$label];
         }
 
-        public function setDisable(){
+        public function copyUnit(){
         }
 
-        public function deleteDisable(){
+        public function deleteUnit(){
         }
 
-        public function addUnit($id){
+        public function getUnit($label = null){
+            if(!is_null($label)) return $this->unit[$label];
+            else return $this->unit;
         }
 
-        public function copyUnit($id_source, $id_dest){
+        public function replaceUnit(){
         }
 
-        public function deleteUnit($id){
+        /**
+         * @param $label
+         * @param string $unit
+         * @return \OpenNetworkTools\OpenConfig\Interfaces\Unit
+         */
+        public function setUnit($label, $unit = \OpenNetworkTools\OpenConfig\Interfaces\Unit::class){
+            $this->unit[$label] = $unit;
+            ksort($this->unit);
+            return $this->unit[$label];
         }
-
-        public function getUnit($id = NULL){
-        }
-
-        public function replaceUnit($id_source, $id_dest){
-        }
-
-        public function setUnit($unit, $id = NULL){
-        }
-
 
     }

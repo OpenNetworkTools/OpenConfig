@@ -3,7 +3,7 @@
         
     interface InterfacesInterfaces {
     
-        public function __construct();
+        public function __construct($openConfig);
         public function getDescription();
         public function setDescription($description);
         public function getDisable();

@@ -3,7 +3,7 @@ namespace OpenNetworkTools\Interfaces\OpenConfig;
         
     interface VlansInterfaces {
 
-        public function __construct();
+        public function __construct($openConfig);
         public function getDescription();
         public function setDescription($description);
         public function getRoutingInterface();
