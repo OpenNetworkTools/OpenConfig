@@ -19,7 +19,7 @@
          * @return \OpenNetworkTools\OpenConfig\Interfaces
          */
         public function addInterfaces($label){
-            if(!is_object($this->interfaces[$label])) $this->setInterfaces($label, new \OpenNetworkTools\OpenConfig\Interfaces($this));
+            if(!@is_object($this->interfaces[$label])) $this->setInterfaces($label, new \OpenNetworkTools\OpenConfig\Interfaces($this));
             return $this->interfaces[$label];
         }
 
