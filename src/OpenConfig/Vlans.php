@@ -11,6 +11,7 @@
 
         private $description;
         private $routingInterface;
+        private $type;
         private $vlanId;
         private $vxlan;
 
@@ -58,9 +59,29 @@
          */
         public function setRoutingInterface($unitLabel){
             if(sizeof($this->routingInterface) == 0){
-                $this->routingInterface[$unitLabel] = $this->openConfig->getInterfaces("irb")->getUnit($unitLabel);
+                if(sizeof($this->openConfig->getInterfaces("irb")->getUnit($unitLabel)->getVlan()) == 0)
+                    $this->routingInterface[$unitLabel] = $this->openConfig->getInterfaces("irb")->getUnit($unitLabel);
+                else throw new \Exception("erreur");
                 return $this->getRoutingInterface();
             } else throw new \Exception("erreur");
+        }
+
+        public function getType(){
+            return $this->type;
+        }
+
+        public function setType($type = null){
+            switch ($type){
+                case "port-mstprstp":
+                    $this->type = new \OpenNetworkTools\OpenConfig\Vlans\PortMstpRstp();
+                    break;
+                case "spbm-bvlan":
+                    $this->type = new \OpenNetworkTools\OpenConfig\Vlans\SpbmBVlan();
+                    break;
+                default:
+                    throw new \Exception("erreur");
+            }
+            return $this->type;
         }
 
         /**
