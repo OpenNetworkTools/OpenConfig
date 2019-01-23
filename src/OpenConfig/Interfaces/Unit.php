@@ -84,7 +84,19 @@
         public function deleteFamily(){
         }
 
-        public function getFamily(){
+        private function getFamily($family){
+            switch ($family){
+                case "ethernet-switching":
+                    if(is_object($this->family["ethernet-switching"])) return $this->family['ethernet-switching'];
+                    else return null;
+                    break;
+                default:
+                    throw new \Exception("erreur");
+            }
+        }
+
+        public function getFamilyEthernetSwitching(){
+            return $this->getFamily("ethernet-switching");
         }
 
         public function setFamily(){
