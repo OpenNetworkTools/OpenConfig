@@ -17,6 +17,10 @@
             $this->interfaceLabel = $interfaceLabel;
         }
 
+        public function getInterfaceLabel(){
+            return $this->interfaceLabel;
+        }
+
         public function getPortMode(){
             return $this->portMode;
         }
