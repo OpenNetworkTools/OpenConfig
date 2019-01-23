@@ -7,15 +7,26 @@
          * @var \OpenNetworkTools\OpenConfig
          */
         private $openConfig;
+        private $label;
 
         private $description;
         private $disable = false;
         private $nativeVlan;
         private $unit;
 
-        public function __construct($openConfig){
-            $this->openConfig = $openConfig;
+        public function __construct($openConfig, $label){
+            $this->openConfig   = $openConfig;
+            $this->label        = $label;
         }
+
+        public function getLabel(){
+            return $this->label;
+        }
+
+        public function setLabel($label){
+            $this->label = $label;
+        }
+
 
         public function getDescription(){
             return $this->description;
@@ -61,8 +72,8 @@
          * @param $label
          * @return array | \OpenNetworkTools\OpenConfig\Interfaces\Unit
          */
-        public function addUnit($label){
-            if(!@is_object($this->unit[$label])) $this->setUnit($label, new \OpenNetworkTools\OpenConfig\Interfaces\Unit());
+        public function addUnit($label = 0){
+            if(!@is_object($this->unit[$label])) $this->setUnit($label, new \OpenNetworkTools\OpenConfig\Interfaces\Unit($this->openConfig, $label, $this->label));
             return $this->unit[$label];
         }
 
@@ -78,7 +89,10 @@
          */
         public function getUnit($label = null){
             if(!is_null($label)) return $this->unit[$label];
-            else return $this->unit;
+            else {
+                if(is_array($this->unit)) return $this->unit;
+                else return array();
+            }
         }
 
         public function replaceUnit(){

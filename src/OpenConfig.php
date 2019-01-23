@@ -19,7 +19,7 @@
          * @return \OpenNetworkTools\OpenConfig\Interfaces
          */
         public function addInterfaces($label){
-            if(!@is_object($this->interfaces[$label])) $this->setInterfaces($label, new \OpenNetworkTools\OpenConfig\Interfaces($this));
+            if(!@is_object($this->interfaces[$label])) $this->setInterfaces($label, new \OpenNetworkTools\OpenConfig\Interfaces($this, $label));
             return $this->interfaces[$label];
         }
 
@@ -55,7 +55,10 @@
          */
         public function getInterfaces($label = null){
             if(!is_null($label)) return $this->interfaces[$label];
-            else return $this->interfaces;
+            else {
+                if(is_array($this->interfaces)) return $this->interfaces;
+                else return array();
+            }
         }
 
         /**
@@ -70,9 +73,12 @@
         /**
          * @param $label
          * @param string $interface
+         * @return \OpenNetworkTools\OpenConfig\Interfaces
          */
         public function setInterfaces($label, $interface = \OpenNetworkTools\OpenConfig\Interfaces::class){
-            $this->interfaces[$label] = $interface;
+            if(is_object($interface)) $this->interfaces[$label] = $interface;
+            else $this->interfaces[$label] = new \OpenNetworkTools\OpenConfig\Interfaces($this, $label);
+
             ksort($this->interfaces);
             return $this->interfaces[$label];
         }
@@ -108,7 +114,10 @@
          */
         public function getVlans($label = null){
             if(!is_null($label)) return $this->vlans[$label];
-            else return $this->vlans;
+            else {
+                if(is_array($this->vlans)) return $this->vlans;
+                else return array();
+            }
         }
 
         /**
@@ -127,9 +136,8 @@
          */
         public function setVlans($label, $vlan = null){
             if(is_object($vlan)) $this->vlans[$label] = $vlan;
-            else {
-                $this->vlans[$label] = new \OpenNetworkTools\OpenConfig\Vlans($this, $label);
-            }
+            else $this->vlans[$label] = new \OpenNetworkTools\OpenConfig\Vlans($this, $label);
+
             ksort($this->vlans);
             return $this->vlans[$label];
         }

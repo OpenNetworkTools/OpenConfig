@@ -7,6 +7,7 @@
         private $type = "port-mstprstp";
     
         public function __construct(){
+            $this->setInstance(1);
         }
 
         public function getInstance(){

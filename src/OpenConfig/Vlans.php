@@ -15,19 +15,33 @@
         private $vlanId;
         private $vxlan;
 
+        private $members;
+
+        /**
+         * Vlans constructor.
+         * @param $openConfig
+         * @param $label
+         */
         public function __construct($openConfig, $label){
             $this->openConfig = $openConfig;
             $this->label = $label;
         }
 
+        /**
+         * @return string
+         */
         public function getLabel(){
             return $this->label;
         }
 
+        /**
+         * @param $label
+         * @return $this
+         */
         public function setLabel($label){
             $this->label = $label;
+            return $this;
         }
-
 
         /**
          * @return string
@@ -49,7 +63,8 @@
          * @return \OpenNetworkTools\OpenConfig\Interfaces\Unit
          */
         public function getRoutingInterface(){
-            return $this->routingInterface[key($this->routingInterface)];
+            if(is_array($this->routingInterface)) return $this->routingInterface[key($this->routingInterface)];
+            else return null;
         }
 
         /**
@@ -58,19 +73,19 @@
          * @throws \Exception
          */
         public function setRoutingInterface($unitLabel){
-            if(sizeof($this->routingInterface) == 0){
-                if(sizeof($this->openConfig->getInterfaces("irb")->getUnit($unitLabel)->getVlan()) == 0)
-                    $this->routingInterface[$unitLabel] = $this->openConfig->getInterfaces("irb")->getUnit($unitLabel);
-                else throw new \Exception("erreur");
-                return $this->getRoutingInterface();
-            } else throw new \Exception("erreur");
         }
 
         public function getType(){
             return $this->type;
         }
 
-        public function setType($type = null){
+        /**
+         * @param null $type port-mstprstp
+         * @param null $type spbm-bvlan
+         * @return Vlans\PortMstpRstp|Vlans\SpbmBVlan
+         * @throws \Exception
+         */
+        private function setType($type = null){
             switch ($type){
                 case "port-mstprstp":
                     $this->type = new \OpenNetworkTools\OpenConfig\Vlans\PortMstpRstp();
@@ -82,6 +97,14 @@
                     throw new \Exception("erreur");
             }
             return $this->type;
+        }
+
+        public function setTypePortMstpRstp(){
+            return $this->setType("port-mstprstp");
+        }
+
+        public function setTypeSpbmBVlan(){
+            return $this->setType("spbm-bvlan");
         }
 
         /**
@@ -98,6 +121,15 @@
         public function setVlanId($vlanId){
             $this->vlanId = $vlanId;
             return $this;
+        }
+
+        public function addMember($label, $interface){
+            $this->members[$label] = $interface;
+            return $this;
+        }
+
+        public function getMembers(){
+            return $this->members;
         }
 
     }
