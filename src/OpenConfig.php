@@ -24,7 +24,8 @@
         }
 
         public function addIntercaesAE($unit){
-            return $this->addInterfaces("ae".$unit);
+            if(!@is_object($this->interfaces["ae".$unit])) $this->setInterfaces("ae".$unit, new \OpenNetworkTools\OpenConfig\InterfacesAE($this, "ae".$unit));
+            return $this->interfaces["ae".$unit];
         }
 
         /**
@@ -81,6 +82,15 @@
 
             ksort($this->interfaces);
             return $this->interfaces[$label];
+        }
+
+        public function getSystem(){
+            return $this->system;
+        }
+
+        public function setSystem(){
+            if(!is_object($this->system)) $this->system = new \OpenNetworkTools\OpenConfig\System();
+            return $this->system;
         }
 
         /**

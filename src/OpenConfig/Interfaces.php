@@ -11,6 +11,7 @@
 
         private $description;
         private $disable = false;
+        private $etherOptions;
         private $nativeVlan;
         private $unit;
 
@@ -49,6 +50,15 @@
         public function deleteDisable(){
             $this->disable = false;
             return $this;
+        }
+
+        public function getEtherOptions(){
+            return $this->etherOptions;
+        }
+
+        public function setEtherOptions(){
+            if(!is_object($this->etherOptions)) $this->etherOptions = new \OpenNetworkTools\OpenConfig\Interfaces\EtherOptions($this->openConfig, $this->label);
+            return $this->etherOptions;
         }
 
         /**
